@@ -1,28 +1,34 @@
+const form = document.getElementById('form');
 
-    
+form.addEventListener('submit', function(event) {
+    event.preventDefault();
 
-function calcularIMC() {
+    const weight = document.getElementById('weight').value;
+    const height = document.getElementById('height').value;
 
-    let nome = document.getElementById("Nome").value;
-    let peso = Number(document.getElementById("Peso").value);
-    let altura = Number(document.getElementById("Altura").value);
+    const bmi = (weight / (height * height)).toFixed(2);
 
-    let imc = peso / (altura * altura);
+    const value = document.getElementById('value');
+    value.classList.add('attention');
+    document.getElementById('infos').classList.remove('hidden');
 
-    let resultado = document.getElementById("resultando");
-
-    if (imc < 18.5) {
-        resultado.innerHTML = `${nome}, seu IMC é ${imc.toFixed(2)}. Abaixo do peso.`;
-
-    } else if (imc < 25) {
-        resultado.innerHTML = `${nome}, seu IMC é ${imc.toFixed(2)}. Peso normal.`;
-
-    } else if (imc < 30) {
-        resultado.innerHTML = `${nome}, seu IMC é ${imc.toFixed(2)}. Sobrepeso.`;
-
-    } else {
-        resultado.innerHTML = `${nome}, seu IMC é ${imc.toFixed(2)}. Obesidade.`;
+    let description = '';
+    if (bmi < 18.5) {
+        description = 'Cuidado! Voce esta abaixo do peso'
+    } else if (bmi <= 25) {
+        description = 'Voce esta no peso ideial!';
+        value.classList.remove('attention');
+        value.classList.add('normal');
+    } else if (bmi > 25 && bmi <= 30) {
+        description = "cuidado! vocé esta com sobrepeso";
+    } else if (bmi > 30 && bmi <= 35) {
+            description = "cuidado! Voce esta com obesidade moderada";
+    }   else if (bmi > 35 && bmi <= 40) {
+        description = "cuidado! Voce esta com obesidade severa!";
+    }   else {
+        description = "CUidado! Vocé está com obesidade morbidal";
     }
-}
 
-document.getElementById("calcular").addEventListener("click", calcularIMC);
+    value.textContent = bmi.replace('.', ',');
+    document.getElementById('description').textContent = description
+})
